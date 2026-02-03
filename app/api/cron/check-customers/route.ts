@@ -166,4 +166,4 @@ function calculateDelay(page: number): number {
 }
 
 export const dynamic = "force-dynamic";
-export const maxDuration = 10; // Orchestrator should be fast
+export const maxDuration = 60; // Allow time to queue all jobs via QStash
