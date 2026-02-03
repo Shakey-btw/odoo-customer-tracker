@@ -1,7 +1,7 @@
 import { Customer } from "@/types/customer";
 import { TrackingTarget } from "@/types/target";
 import { getSheetsClient } from "./auth";
-import { GOOGLE_SHEETS, TARGET_CONFIGS } from "@/lib/config/constants";
+import { GOOGLE_SHEETS } from "@/lib/config/constants";
 import { TARGET_CONFIGS as TARGETS } from "@/lib/config/targets";
 
 /**
