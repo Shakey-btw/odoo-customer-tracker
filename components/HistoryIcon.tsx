@@ -1,7 +1,20 @@
 import React from 'react';
 
+interface HistoryIconProps {
+  size?: number;
+  color?: string;
+  strokeWidth?: number;
+  background?: string;
+  opacity?: number;
+  rotation?: number;
+  shadow?: number;
+  flipHorizontal?: boolean;
+  flipVertical?: boolean;
+  padding?: number;
+}
+
 const HistoryIcon = ({
-  size = undefined,
+  size,
   color = '#000000',
   strokeWidth = 2,
   background = 'transparent',
@@ -11,7 +24,7 @@ const HistoryIcon = ({
   flipHorizontal = false,
   flipVertical = false,
   padding = 0
-}) => {
+}: HistoryIconProps) => {
   const transforms = [];
   if (rotation !== 0) transforms.push(`rotate(${rotation}deg)`);
   if (flipHorizontal) transforms.push('scaleX(-1)');
