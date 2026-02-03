@@ -43,7 +43,10 @@ export async function markCustomersAsSeen(
   const hashes = customers.map(generateCustomerHash);
   const key = `${REDIS_KEYS.SEEN_PREFIX}${target}`;
 
-  await getRedisClient().sadd(key, ...hashes);
+  // Add all hashes to the Redis set
+  if (hashes.length > 0) {
+    await getRedisClient().sadd(key, hashes[0], ...hashes.slice(1));
+  }
 }
 
 /**
