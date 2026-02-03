@@ -34,7 +34,14 @@ export async function GET(request: NextRequest) {
     console.log("[Orchestrator] Starting customer check...");
 
     const qstash = getQStashClient();
-    const workerUrl = `${process.env.VERCEL_URL || "http://localhost:3000"}/api/scrape/worker`;
+
+    // Construct worker URL with protocol
+    const baseUrl = process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : "http://localhost:3000";
+    const workerUrl = `${baseUrl}/api/scrape/worker`;
+
+    console.log(`[Orchestrator] Worker URL: ${workerUrl}`);
 
     // Determine strategy for each target
     const targets: TrackingTarget[] = ["all", "dach", "uk"];
