@@ -1,6 +1,6 @@
 import { Customer } from "@/types/customer";
 import { TrackingTarget } from "@/types/target";
-import { redisClient } from "./redis";
+import { getRedisClient } from "./redis";
 import { generateCustomerHash } from "./hash";
 import { REDIS_KEYS } from "@/lib/config/constants";
 
@@ -14,7 +14,7 @@ export async function isCustomerSeen(
   const hash = generateCustomerHash(customer);
   const key = `${REDIS_KEYS.SEEN_PREFIX}${target}`;
 
-  const exists = await redisClient.sismember(key, hash);
+  const exists = await getRedisClient().sismember(key, hash);
   return exists === 1;
 }
 
@@ -28,7 +28,7 @@ export async function markCustomerAsSeen(
   const hash = generateCustomerHash(customer);
   const key = `${REDIS_KEYS.SEEN_PREFIX}${target}`;
 
-  await redisClient.sadd(key, hash);
+  await getRedisClient().sadd(key, hash);
 }
 
 /**
@@ -43,7 +43,7 @@ export async function markCustomersAsSeen(
   const hashes = customers.map(generateCustomerHash);
   const key = `${REDIS_KEYS.SEEN_PREFIX}${target}`;
 
-  await redisClient.sadd(key, ...hashes);
+  await getRedisClient().sadd(key, ...hashes);
 }
 
 /**
@@ -61,12 +61,12 @@ export async function filterNewCustomers(
 
   for (const customer of customers) {
     const hash = generateCustomerHash(customer);
-    const exists = await redisClient.sismember(key, hash);
+    const exists = await getRedisClient().sismember(key, hash);
 
     if (exists === 0) {
       newCustomers.push(customer);
       // Mark as seen immediately to prevent duplicates in the same batch
-      await redisClient.sadd(key, hash);
+      await getRedisClient().sadd(key, hash);
     }
   }
 
@@ -78,7 +78,7 @@ export async function filterNewCustomers(
  */
 export async function getSeenCustomersCount(target: TrackingTarget): Promise<number> {
   const key = `${REDIS_KEYS.SEEN_PREFIX}${target}`;
-  return await redisClient.scard(key);
+  return await getRedisClient().scard(key);
 }
 
 /**
@@ -104,7 +104,7 @@ export async function markInParentTargets(
  */
 export async function resetSeenCustomers(target: TrackingTarget): Promise<void> {
   const key = `${REDIS_KEYS.SEEN_PREFIX}${target}`;
-  await redisClient.del(key);
+  await getRedisClient().del(key);
 }
 
 /**
@@ -112,7 +112,7 @@ export async function resetSeenCustomers(target: TrackingTarget): Promise<void> 
  */
 export async function getLastCheckTimestamp(target: TrackingTarget): Promise<number | null> {
   const key = `${REDIS_KEYS.LAST_CHECK_PREFIX}${target}`;
-  const timestamp = await redisClient.get(key);
+  const timestamp = await getRedisClient().get(key);
   return timestamp ? Number(timestamp) : null;
 }
 
@@ -121,7 +121,7 @@ export async function getLastCheckTimestamp(target: TrackingTarget): Promise<num
  */
 export async function updateLastCheckTimestamp(target: TrackingTarget): Promise<void> {
   const key = `${REDIS_KEYS.LAST_CHECK_PREFIX}${target}`;
-  await redisClient.set(key, Date.now());
+  await getRedisClient().set(key, Date.now());
 }
 
 /**
@@ -129,7 +129,7 @@ export async function updateLastCheckTimestamp(target: TrackingTarget): Promise<
  */
 export async function getLastFullScanTimestamp(target: TrackingTarget): Promise<number | null> {
   const key = `${REDIS_KEYS.LAST_FULL_SCAN_PREFIX}${target}`;
-  const timestamp = await redisClient.get(key);
+  const timestamp = await getRedisClient().get(key);
   return timestamp ? Number(timestamp) : null;
 }
 
@@ -138,7 +138,7 @@ export async function getLastFullScanTimestamp(target: TrackingTarget): Promise<
  */
 export async function updateLastFullScanTimestamp(target: TrackingTarget): Promise<void> {
   const key = `${REDIS_KEYS.LAST_FULL_SCAN_PREFIX}${target}`;
-  await redisClient.set(key, Date.now());
+  await getRedisClient().set(key, Date.now());
 }
 
 /**
