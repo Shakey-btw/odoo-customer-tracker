@@ -7,7 +7,7 @@ import { TrackingTarget } from "@/types/target";
 
 // Initialize QStash client
 function getQStashClient() {
-  const token = process.env.QSTASH_TOKEN;
+  const token = process.env.QSTASH_TOKEN?.trim();
 
   if (!token) {
     throw new Error("QSTASH_TOKEN environment variable is required");

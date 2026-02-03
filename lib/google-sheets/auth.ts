@@ -5,7 +5,7 @@ let auth: GoogleAuth | null = null;
 
 export function getGoogleAuth(): GoogleAuth {
   if (!auth) {
-    const credentials = process.env.GOOGLE_SHEETS_CREDENTIALS;
+    const credentials = process.env.GOOGLE_SHEETS_CREDENTIALS?.trim();
 
     if (!credentials) {
       throw new Error(
