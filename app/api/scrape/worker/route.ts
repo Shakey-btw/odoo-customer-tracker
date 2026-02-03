@@ -5,6 +5,8 @@ import { buildUrl } from "@/lib/scraper/url-builder";
 import { filterNewCustomers } from "@/lib/state/seen-tracker";
 import { appendCustomersToSheet } from "@/lib/google-sheets/writer";
 import { TARGET_CONFIGS } from "@/lib/config/targets";
+import { getRedisClient } from "@/lib/state/redis";
+import { TrackingTarget } from "@/types/target";
 
 export async function POST(request: NextRequest) {
   const startTime = Date.now();
@@ -64,6 +66,9 @@ export async function POST(request: NextRequest) {
       await appendCustomersToSheet(job.target, newCustomers);
     }
 
+    // Log history to Redis
+    await logHistory(job.target, customers.length, newCustomers.length);
+
     const duration = Date.now() - startTime;
 
     const result: ScrapingResult = {
@@ -92,6 +97,30 @@ export async function POST(request: NextRequest) {
       },
       { status: 500 }
     );
+  }
+}
+
+async function logHistory(
+  target: TrackingTarget,
+  customersFound: number,
+  newCustomers: number
+): Promise<void> {
+  try {
+    const redis = getRedisClient();
+    const historyEntry = JSON.stringify({
+      target,
+      customersFound,
+      newCustomers,
+      timestamp: Date.now()
+    });
+
+    // Store in Redis list (keep last 100 entries per target)
+    const key = `history:${target}`;
+    await redis.lpush(key, historyEntry);
+    await redis.ltrim(key, 0, 99); // Keep only last 100 entries
+  } catch (error) {
+    console.error("Failed to log history:", error);
+    // Don't fail the worker if history logging fails
   }
 }
 
