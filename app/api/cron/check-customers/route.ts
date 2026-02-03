@@ -20,11 +20,14 @@ export async function GET(request: NextRequest) {
   const startTime = Date.now();
 
   try {
+    console.log("[Orchestrator] Request received at", new Date().toISOString());
+
     // Verify cron secret (optional but recommended)
     const authHeader = request.headers.get("authorization");
     const cronSecret = process.env.CRON_SECRET;
 
     if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
+      console.log("[Orchestrator] Unauthorized request");
       return NextResponse.json(
         { error: "Unauthorized" },
         { status: 401 }
@@ -32,8 +35,15 @@ export async function GET(request: NextRequest) {
     }
 
     console.log("[Orchestrator] Starting customer check...");
+    console.log("[Orchestrator] Environment check:", {
+      hasQStashToken: !!process.env.QSTASH_TOKEN,
+      hasRedisUrl: !!process.env.UPSTASH_REDIS_REST_URL,
+      hasRedisToken: !!process.env.UPSTASH_REDIS_REST_TOKEN,
+      vercelUrl: process.env.VERCEL_URL
+    });
 
     const qstash = getQStashClient();
+    console.log("[Orchestrator] QStash client initialized");
 
     // Construct worker URL with protocol
     const baseUrl = process.env.VERCEL_URL
@@ -48,6 +58,9 @@ export async function GET(request: NextRequest) {
     let totalJobsQueued = 0;
 
     for (const target of targets) {
+      const targetStartTime = Date.now();
+      console.log(`[Orchestrator] Processing target: ${target}`);
+
       const config = TARGET_CONFIGS[target];
       const isFullScan = await shouldDoFullScan(target);
 
@@ -61,54 +74,64 @@ export async function GET(request: NextRequest) {
       console.log(`[Orchestrator] ${target}: Queuing ${pagesToCheck.length} pages`);
 
       // Queue jobs for this target
-      if (target === "all") {
-        // Simple case: queue pages directly
-        for (const page of pagesToCheck) {
-          const job: ScrapingJob = {
-            target,
-            page,
-            timestamp: Date.now()
-          };
-
-          await qstash.publishJSON({
-            url: workerUrl,
-            body: job,
-            delay: calculateDelay(page)
-          });
-
-          totalJobsQueued++;
-        }
-      } else {
-        // DACH or UK: queue per country
-        for (const country of config.countries) {
+      try {
+        if (target === "all") {
+          // Simple case: queue pages directly
           for (const page of pagesToCheck) {
-            // Only queue if page exists for this country
-            if (page <= country.pages) {
-              const job: ScrapingJob = {
-                target,
-                country: country.name,
-                countryId: country.id,
-                page,
-                timestamp: Date.now()
-              };
+            const job: ScrapingJob = {
+              target,
+              page,
+              timestamp: Date.now()
+            };
 
-              await qstash.publishJSON({
-                url: workerUrl,
-                body: job,
-                delay: calculateDelay(page)
-              });
+            await qstash.publishJSON({
+              url: workerUrl,
+              body: job,
+              delay: calculateDelay(page)
+            });
 
-              totalJobsQueued++;
+            totalJobsQueued++;
+          }
+        } else {
+          // DACH or UK: queue per country
+          for (const country of config.countries) {
+            for (const page of pagesToCheck) {
+              // Only queue if page exists for this country
+              if (page <= country.pages) {
+                const job: ScrapingJob = {
+                  target,
+                  country: country.name,
+                  countryId: country.id,
+                  page,
+                  timestamp: Date.now()
+                };
+
+                await qstash.publishJSON({
+                  url: workerUrl,
+                  body: job,
+                  delay: calculateDelay(page)
+                });
+
+                totalJobsQueued++;
+              }
             }
           }
         }
-      }
 
-      // Update timestamps
-      await updateLastCheckTimestamp(target);
+        const targetDuration = Date.now() - targetStartTime;
+        console.log(`[Orchestrator] ${target}: Queued ${pagesToCheck.length} jobs in ${targetDuration}ms`);
 
-      if (isFullScan) {
-        await updateLastFullScanTimestamp(target);
+        // Update timestamps
+        await updateLastCheckTimestamp(target);
+
+        if (isFullScan) {
+          await updateLastFullScanTimestamp(target);
+        }
+
+        console.log(`[Orchestrator] ${target}: Updated timestamps`);
+      } catch (targetError) {
+        console.error(`[Orchestrator] Error processing target ${target}:`, targetError);
+        throw targetError;
       }
     }
 
@@ -126,12 +149,19 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     const duration = Date.now() - startTime;
 
-    console.error(`[Orchestrator] Error after ${duration}ms:`, error);
+    console.error(`[Orchestrator] FATAL ERROR after ${duration}ms`);
+    console.error(`[Orchestrator] Error type:`, error?.constructor?.name);
+    console.error(`[Orchestrator] Error message:`, error instanceof Error ? error.message : String(error));
+    console.error(`[Orchestrator] Error stack:`, error instanceof Error ? error.stack : 'No stack trace');
+    console.error(`[Orchestrator] Full error object:`, JSON.stringify(error, Object.getOwnPropertyNames(error)));
 
     return NextResponse.json(
       {
         success: false,
-        error: error instanceof Error ? error.message : String(error)
+        error: error instanceof Error ? error.message : String(error),
+        errorType: error?.constructor?.name,
+        duration,
+        timestamp: new Date().toISOString()
       },
       { status: 500 }
     );
