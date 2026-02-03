@@ -1,0 +1,775 @@
+================================================================================
+ODOO CUSTOMER TRACKING BOT - DETAILED TEST
+================================================================================
+
+Test Date: 2026-02-03T11:20:46.740Z
+
+
+════════════════════════════════════════════════════════════════════════════════
+SCENARIO 1: Pull first 3 pages of DACH
+════════════════════════════════════════════════════════════════════════════════
+
+DACH includes: Germany, Austria, Switzerland
+We will scrape 3 pages from each country
+
+
+────────────────────────────────────────────────────────────────────────────────
+Country: Germany (deutschland)
+────────────────────────────────────────────────────────────────────────────────
+
+  → Scraping page 1: https://www.odoo.com/de_DE/customers/country/deutschland-56
+  ✓ Found 20 customers
+
+  Sample customers from this page:
+
+    1. Deutsche Business Consulting GmbH
+       Industry: IT / Kommunikation / Marketing
+       Country: IT / Kommunikation / Marketing
+       URL: https://www.odoo.com/de_DE/customers/deutsche-business-consulting-gmbh-869718
+       Hash: deutsche business consulting gmbh|it  kommunikation  marketing|it  kommunikation  marketing
+
+    2. FinancePlan+ Finanz- und Versicherungsmakler GmbH
+       Industry: Finanzen/Versicherung
+       Country: Finanzen/Versicherung
+       URL: https://www.odoo.com/de_DE/customers/financeplan-finanz-und-versicherungsmakler-gmbh-981754
+       Hash: financeplan finanz- und versicherungsmakler gmbh|finanzenversicherung|finanzenversicherung
+
+  → Scraping page 2: https://www.odoo.com/de_DE/customers/country/deutschland-56/page/2
+  ✓ Found 20 customers
+
+  Sample customers from this page:
+
+    1. 8watt GmbH
+       Industry: Versorgungsbetriebe / Energie / Wasserversorgung
+       Country: Versorgungsbetriebe / Energie / Wasserversorgung
+       URL: https://www.odoo.com/de_DE/customers/8watt-gmbh-11432934
+       Hash: 8watt gmbh|versorgungsbetriebe  energie  wasserversorgung|versorgungsbetriebe  energie  wasserversorgung
+
+    2. A+A Objektausstattung GmbH
+       Industry: Dienstleistungen und Beratung
+       Country: Dienstleistungen und Beratung
+       URL: https://www.odoo.com/de_DE/customers/aa-objektausstattung-gmbh-18158708
+       Hash: aa objektausstattung gmbh|dienstleistungen und beratung|dienstleistungen und beratung
+
+  → Scraping page 3: https://www.odoo.com/de_DE/customers/country/deutschland-56/page/3
+  ✓ Found 20 customers
+
+  Sample customers from this page:
+
+    1. ALAMO Engineering GmbH
+       Industry: Wissenschaft und Technologie
+       Country: Wissenschaft und Technologie
+       URL: https://www.odoo.com/de_DE/customers/alamo-engineering-gmbh-1625804
+       Hash: alamo engineering gmbh|wissenschaft und technologie|wissenschaft und technologie
+
+    2. ALAMO Engineering GmbH, Thomas Schroeder
+       Industry: Wissenschaft und Technologie
+       Country: Wissenschaft und Technologie
+       URL: https://www.odoo.com/de_DE/customers/alamo-engineering-gmbh-thomas-schroeder-1563169
+       Hash: alamo engineering gmbh thomas schroeder|wissenschaft und technologie|wissenschaft und technologie
+
+
+────────────────────────────────────────────────────────────────────────────────
+Country: Austria (osterreich)
+────────────────────────────────────────────────────────────────────────────────
+
+  → Scraping page 1: https://www.odoo.com/de_DE/customers/country/osterreich-13
+  ✓ Found 20 customers
+
+  Sample customers from this page:
+
+    1. "Gemeindebetriebe Frohnleiten, Gesellschaft m.b.H."
+       Industry: Öffentliche Verwaltung
+       Country: Öffentliche Verwaltung
+       URL: https://www.odoo.com/de_DE/customers/gemeindebetriebe-frohnleiten-gesellschaft-mbh-22308203
+       Hash: gemeindebetriebe frohnleiten gesellschaft mbh|ffentliche verwaltung|ffentliche verwaltung
+
+    2. 2nd Cycle FlexCo
+       Industry: Fertigung / Instandhaltung
+       Country: Fertigung / Instandhaltung
+       URL: https://www.odoo.com/de_DE/customers/2nd-cycle-flexco-14739616
+       Hash: 2nd cycle flexco|fertigung  instandhaltung|fertigung  instandhaltung
+
+  → Scraping page 2: https://www.odoo.com/de_DE/customers/country/osterreich-13/page/2
+  ✓ Found 20 customers
+
+  Sample customers from this page:
+
+    1. AQUASLIDE Lubricants GmbH
+       Industry: Wissenschaft und Technologie
+       Country: Wissenschaft und Technologie
+       URL: https://www.odoo.com/de_DE/customers/aquaslide-lubricants-gmbh-24369539
+       Hash: aquaslide lubricants gmbh|wissenschaft und technologie|wissenschaft und technologie
+
+    2. ARTVISTA GmbH
+       Industry: Lebensmittel / Gastgewerbe / Tourismus
+       Country: Lebensmittel / Gastgewerbe / Tourismus
+       URL: https://www.odoo.com/de_DE/customers/artvista-gmbh-6300716
+       Hash: artvista gmbh|lebensmittel  gastgewerbe  tourismus|lebensmittel  gastgewerbe  tourismus
+
+  → Scraping page 3: https://www.odoo.com/de_DE/customers/country/osterreich-13/page/3
+  ✓ Found 20 customers
+
+  Sample customers from this page:
+
+    1. Am Hof 8 Betriebs GmbH
+       Industry: Lebensmittel / Gastgewerbe / Tourismus
+       Country: Lebensmittel / Gastgewerbe / Tourismus
+       URL: https://www.odoo.com/de_DE/customers/am-hof-8-betriebs-gmbh-13860786
+       Hash: am hof 8 betriebs gmbh|lebensmittel  gastgewerbe  tourismus|lebensmittel  gastgewerbe  tourismus
+
+    2. Amerikanische Handelskammer in Österreich
+       Industry: Rekrutierung und Personalbereitstellung
+       Country: Rekrutierung und Personalbereitstellung
+       URL: https://www.odoo.com/de_DE/customers/amerikanische-handelskammer-in-osterreich-22875683
+       Hash: amerikanische handelskammer in sterreich|rekrutierung und personalbereitstellung|rekrutierung und personalbereitstellung
+
+
+────────────────────────────────────────────────────────────────────────────────
+Country: Switzerland (schweiz)
+────────────────────────────────────────────────────────────────────────────────
+
+  → Scraping page 1: https://www.odoo.com/de_DE/customers/country/schweiz-41
+  ✓ Found 20 customers
+
+  Sample customers from this page:
+
+    1. Astron Associates SA
+       Industry: IT / Kommunikation / Marketing
+       Country: IT / Kommunikation / Marketing
+       URL: https://www.odoo.com/de_DE/customers/astron-associates-sa-506508
+       Hash: astron associates sa|it  kommunikation  marketing|it  kommunikation  marketing
+
+    2. Coyote SA
+       Industry: Unknown
+       Country: Unknown
+       URL: https://www.odoo.com/de_DE/customers/coyote-sa-1256670
+       Hash: coyote sa|unknown|unknown
+
+  → Scraping page 2: https://www.odoo.com/de_DE/customers/country/schweiz-41/page/2
+  ✓ Found 20 customers
+
+  Sample customers from this page:
+
+    1. ADES Suisse-Madagascar
+       Industry: Unknown
+       Country: Unknown
+       URL: https://www.odoo.com/de_DE/customers/ades-suisse-madagascar-14388369
+       Hash: ades suisse-madagascar|unknown|unknown
+
+    2. ADSHome Sàrl
+       Industry: Bau und Renovierung
+       Country: Bau und Renovierung
+       URL: https://www.odoo.com/de_DE/customers/adshome-sarl-24906951
+       Hash: adshome srl|bau und renovierung|bau und renovierung
+
+  → Scraping page 3: https://www.odoo.com/de_DE/customers/country/schweiz-41/page/3
+  ✓ Found 20 customers
+
+  Sample customers from this page:
+
+    1. AOTech Sàrl
+       Industry: IT / Kommunikation / Marketing
+       Country: IT / Kommunikation / Marketing
+       URL: https://www.odoo.com/de_DE/customers/aotech-sarl-18753369
+       Hash: aotech srl|it  kommunikation  marketing|it  kommunikation  marketing
+
+    2. APS Rent Sàrl
+       Industry: Unknown
+       Country: Unknown
+       URL: https://www.odoo.com/de_DE/customers/aps-rent-sarl-14067075
+       Hash: aps rent srl|unknown|unknown
+
+
+════════════════════════════════════════════════════════════════════════════════
+DACH SUMMARY: 180 total customers found across 9 pages
+════════════════════════════════════════════════════════════════════════════════
+
+
+════════════════════════════════════════════════════════════════════════════════
+SCENARIO 2: Pull first 3 pages of UK
+════════════════════════════════════════════════════════════════════════════════
+
+Country: United Kingdom (vereinigtes-konigreich)
+
+  → Scraping page 1: https://www.odoo.com/de_DE/customers/country/vereinigtes-konigreich-222
+  ✓ Found 20 customers
+
+  Sample customers from this page:
+
+    1. 10Squared, Matthew Baxter
+       Industry: Großhandel / Einzelhandel
+       Country: Großhandel / Einzelhandel
+       URL: https://www.odoo.com/de_DE/customers/10squared-matthew-baxter-14934687
+       Hash: 10squared matthew baxter|grohandel  einzelhandel|grohandel  einzelhandel
+
+    2. 12Guitars LTD
+       Industry: Großhandel / Einzelhandel
+       Country: Großhandel / Einzelhandel
+       URL: https://www.odoo.com/de_DE/customers/12guitars-ltd-22114161
+       Hash: 12guitars ltd|grohandel  einzelhandel|grohandel  einzelhandel
+
+  → Scraping page 2: https://www.odoo.com/de_DE/customers/country/vereinigtes-konigreich-222/page/2
+  ✓ Found 20 customers
+
+  Sample customers from this page:
+
+    1. AIPHONE UK LIMITED
+       Industry: Unknown
+       Country: Unknown
+       URL: https://www.odoo.com/de_DE/customers/aiphone-uk-limited-22538195
+       Hash: aiphone uk limited|unknown|unknown
+
+    2. AJUSA UK LTD
+       Industry: Transport / Logistik
+       Country: Transport / Logistik
+       URL: https://www.odoo.com/de_DE/customers/ajusa-uk-ltd-15894935
+       Hash: ajusa uk ltd|transport  logistik|transport  logistik
+
+  → Scraping page 3: https://www.odoo.com/de_DE/customers/country/vereinigtes-konigreich-222/page/3
+  ✓ Found 20 customers
+
+  Sample customers from this page:
+
+    1. Agralan
+       Industry: Dienstleistungen und Beratung
+       Country: Dienstleistungen und Beratung
+       URL: https://www.odoo.com/de_DE/customers/agralan-16854997
+       Hash: agralan|dienstleistungen und beratung|dienstleistungen und beratung
+
+    2. Ailsa Reliability Solutions Ltd
+       Industry: Unknown
+       Country: Unknown
+       URL: https://www.odoo.com/de_DE/customers/ailsa-reliability-solutions-ltd-19909639
+       Hash: ailsa reliability solutions ltd|unknown|unknown
+
+
+════════════════════════════════════════════════════════════════════════════════
+UK SUMMARY: 60 total customers found across 3 pages
+════════════════════════════════════════════════════════════════════════════════
+
+
+════════════════════════════════════════════════════════════════════════════════
+SCENARIO 3: Pull first 1.5 pages of All + Simulate Duplicate Detection
+════════════════════════════════════════════════════════════════════════════════
+
+This scenario demonstrates how the duplicate detection works:
+1. First, we scrape 1.5 pages (page 1 + half of page 2)
+2. Mark the LAST 2 customers as "already seen" (simulate existing in Redis)
+3. Then scrape again and see which ones are detected as "new"
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 1: Initial scrape - Page 1 of All
+────────────────────────────────────────────────────────────────────────────────
+
+  → Scraping: https://www.odoo.com/de_DE/customers
+  ✓ Found 20 customers
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 2: Initial scrape - Page 2 of All
+────────────────────────────────────────────────────────────────────────────────
+
+  → Scraping: https://www.odoo.com/de_DE/customers/page/2
+  ✓ Found 20 customers
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 3: All customers found (40 total)
+────────────────────────────────────────────────────────────────────────────────
+
+1. Fornu d'Kaza
+   Industry: Bau und Renovierung
+   Country: Unknown
+   Hash: fornu dkaza|unknown|bau und renovierung
+
+2. Raloy Lubricantes, S.A. de C.V.
+   Industry: Versorgungsbetriebe / Energie / Wasserversorgung
+   Country: Unknown
+   Hash: raloy lubricantes sa de cv|unknown|versorgungsbetriebe  energie  wasserversorgung
+
+3. ARABIAN TOWER PROJECT CONTRACTING CO.
+   Industry: Bau und Renovierung
+   Country: Unknown
+   Hash: arabian tower project contracting co|unknown|bau und renovierung
+
+4. AXIANS NC
+   Industry: Dienstleistungen und Beratung
+   Country: Unknown
+   Hash: axians nc|unknown|dienstleistungen und beratung
+
+5. Al Halawany Sweets
+   Industry: Fertigung / Instandhaltung
+   Country: Unknown
+   Hash: al halawany sweets|unknown|fertigung  instandhaltung
+
+6. Astron Associates SA
+   Industry: IT / Kommunikation / Marketing
+   Country: Unknown
+   Hash: astron associates sa|unknown|it  kommunikation  marketing
+
+7. Ats-Ammattityökalut Oy
+   Industry: Großhandel / Einzelhandel
+   Country: Unknown
+   Hash: ats-ammattitykalut oy|unknown|grohandel  einzelhandel
+
+8. Australian Target Systems Pty Ltd.
+   Industry: Fertigung / Instandhaltung
+   Country: Unknown
+   Hash: australian target systems pty ltd|unknown|fertigung  instandhaltung
+
+9. Bianca And Bianco Building Materials Trading LLC
+   Industry: Großhandel / Einzelhandel
+   Country: Unknown
+   Hash: bianca and bianco building materials trading llc|unknown|grohandel  einzelhandel
+
+10. C.Sahamongkol Engineering Ltd.,Part.
+   Industry: Unknown
+   Country: Unknown
+   Hash: csahamongkol engineering ltdpart|unknown|unknown
+
+11. Coyote SA
+   Industry: Unknown
+   Country: Unknown
+   Hash: coyote sa|unknown|unknown
+
+12. Deisy Melina Diaz Arevalos (Prico)
+   Industry: Unknown
+   Country: Unknown
+   Hash: deisy melina diaz arevalos prico|unknown|unknown
+
+13. Designers club
+   Industry: Großhandel / Einzelhandel
+   Country: Unknown
+   Hash: designers club|unknown|grohandel  einzelhandel
+
+14. Deutsche Business Consulting GmbH
+   Industry: IT / Kommunikation / Marketing
+   Country: Unknown
+   Hash: deutsche business consulting gmbh|unknown|it  kommunikation  marketing
+
+15. ELITUM DEVELOP S.A.
+   Industry: Wissenschaft und Technologie
+   Country: Unknown
+   Hash: elitum develop sa|unknown|wissenschaft und technologie
+
+16. Farhgaly Sons
+   Industry: Großhandel / Einzelhandel
+   Country: Unknown
+   Hash: farhgaly sons|unknown|grohandel  einzelhandel
+
+17. FinancePlan+ Finanz- und Versicherungsmakler GmbH
+   Industry: Finanzen/Versicherung
+   Country: Unknown
+   Hash: financeplan finanz- und versicherungsmakler gmbh|unknown|finanzenversicherung
+
+18. GRAVITY LIFESTYLE
+   Industry: Unknown
+   Country: Unknown
+   Hash: gravity lifestyle|unknown|unknown
+
+19. General Trading Service Center
+   Industry: Großhandel / Einzelhandel
+   Country: Unknown
+   Hash: general trading service center|unknown|grohandel  einzelhandel
+
+20. H2h immobilier
+   Industry: Immobilien
+   Country: Unknown
+   Hash: h2h immobilier|unknown|immobilien
+
+21. Havilah Merchants Limited
+   Industry: Fertigung / Instandhaltung
+   Country: Unknown
+   Hash: havilah merchants limited|unknown|fertigung  instandhaltung
+
+22. IT FIRST BV
+   Industry: IT / Kommunikation / Marketing
+   Country: Unknown
+   Hash: it first bv|unknown|it  kommunikation  marketing
+
+23. Income Electrix Ltd
+   Industry: Versorgungsbetriebe / Energie / Wasserversorgung
+   Country: Unknown
+   Hash: income electrix ltd|unknown|versorgungsbetriebe  energie  wasserversorgung
+
+24. Infotrans Caribbean N.V.
+   Industry: IT / Kommunikation / Marketing
+   Country: Unknown
+   Hash: infotrans caribbean nv|unknown|it  kommunikation  marketing
+
+25. Infotrans Caribbean N.V. , Infrotrans Group
+   Industry: IT / Kommunikation / Marketing
+   Country: Unknown
+   Hash: infotrans caribbean nv  infrotrans group|unknown|it  kommunikation  marketing
+
+26. Ingenium BY D CC S.A.
+   Industry: Wissenschaft und Technologie
+   Country: Unknown
+   Hash: ingenium by d cc sa|unknown|wissenschaft und technologie
+
+27. Innovate investment Real Estate Company
+   Industry: Immobilien
+   Country: Unknown
+   Hash: innovate investment real estate company|unknown|immobilien
+
+28. Innovative Systems Co. Ltd. (ISys)
+   Industry: IT / Kommunikation / Marketing
+   Country: Unknown
+   Hash: innovative systems co ltd isys|unknown|it  kommunikation  marketing
+
+29. Insumos Para Colombia SAS
+   Industry: Unknown
+   Country: Unknown
+   Hash: insumos para colombia sas|unknown|unknown
+
+30. Inversiones Gabriela Chacón C.A,  Inversiones Gabriela Chacón C.A
+   Industry: Unknown
+   Country: Unknown
+   Hash: inversiones gabriela chacn ca inversiones gabriela chacn ca|unknown|unknown
+
+31. KobaVision
+   Industry: Unknown
+   Country: Unknown
+   Hash: kobavision|unknown|unknown
+
+32. LAAGER TECNOLOGIAS SUSTENTÁVEIS LTDA
+   Industry: IT / Kommunikation / Marketing
+   Country: Unknown
+   Hash: laager tecnologias sustentveis ltda|unknown|it  kommunikation  marketing
+
+33. LUZ Private Limited
+   Industry: Unknown
+   Country: Unknown
+   Hash: luz private limited|unknown|unknown
+
+34. Lechner Kunststofftechnik GmbH & Co. KG
+   Industry: Wissenschaft und Technologie
+   Country: Unknown
+   Hash: lechner kunststofftechnik gmbh  co kg|unknown|wissenschaft und technologie
+
+35. Luxury Goods Trading Co.
+   Industry: Großhandel / Einzelhandel
+   Country: Unknown
+   Hash: luxury goods trading co|unknown|grohandel  einzelhandel
+
+36. MULTIMERKSA S.A.
+   Industry: Unknown
+   Country: Unknown
+   Hash: multimerksa sa|unknown|unknown
+
+37. Magnus Marketing Llc.
+   Industry: Unknown
+   Country: Unknown
+   Hash: magnus marketing llc|unknown|unknown
+
+38. Nectar Beauty hub
+   Industry: Großhandel / Einzelhandel
+   Country: Unknown
+   Hash: nectar beauty hub|unknown|grohandel  einzelhandel
+
+39. Pacifico Snacks
+   Industry: Fertigung / Instandhaltung
+   Country: Unknown
+   Hash: pacifico snacks|unknown|fertigung  instandhaltung
+
+40. Parmax Oy
+   Industry: Großhandel / Einzelhandel
+   Country: Unknown
+   Hash: parmax oy|unknown|grohandel  einzelhandel
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 4: Simulate "Already Seen" State
+────────────────────────────────────────────────────────────────────────────────
+
+Marking the LAST 2 customers as "already seen" (simulate they exist in Redis)
+
+  ✓ Marked as seen: Pacifico Snacks
+    Hash: pacifico snacks|unknown|fertigung  instandhaltung
+
+  ✓ Marked as seen: Parmax Oy
+    Hash: parmax oy|unknown|grohandel  einzelhandel
+
+Redis simulation now contains 2 customer hashes
+
+
+────────────────────────────────────────────────────────────────────────────────
+STEP 5: Re-scrape and Detect New vs Already Seen
+────────────────────────────────────────────────────────────────────────────────
+
+Now we scrape the same pages again and check which customers are "new"
+
+  → Re-scraping page 1: https://www.odoo.com/de_DE/customers
+
+  ✓ Page 1: 20 total → 20 new, 0 already seen
+
+  → Re-scraping page 2: https://www.odoo.com/de_DE/customers/page/2
+
+  ✓ Page 2: 20 total → 18 new, 2 already seen
+
+
+════════════════════════════════════════════════════════════════════════════════
+STEP 6: DUPLICATE DETECTION RESULTS
+════════════════════════════════════════════════════════════════════════════════
+
+Total customers scraped: 40
+✓ NEW customers (would be added to Google Sheets): 38
+⊗ ALREADY SEEN customers (skipped): 2
+
+
+────────────────────────────────────────────────────────────────────────────────
+NEW Customers (these would be written to Google Sheets):
+────────────────────────────────────────────────────────────────────────────────
+
+1. Fornu d'Kaza
+   Industry: Bau und Renovierung
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/fornu-dkaza-9920282
+
+2. Raloy Lubricantes, S.A. de C.V.
+   Industry: Versorgungsbetriebe / Energie / Wasserversorgung
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/raloy-lubricantes-sa-de-cv-2794952
+
+3. ARABIAN TOWER PROJECT CONTRACTING CO.
+   Industry: Bau und Renovierung
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/arabian-tower-project-contracting-co-3470353
+
+4. AXIANS NC
+   Industry: Dienstleistungen und Beratung
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/axians-nc-1876176
+
+5. Al Halawany Sweets
+   Industry: Fertigung / Instandhaltung
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/al-halawany-sweets-8623276
+
+6. Astron Associates SA
+   Industry: IT / Kommunikation / Marketing
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/astron-associates-sa-506508
+
+7. Ats-Ammattityökalut Oy
+   Industry: Großhandel / Einzelhandel
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/ats-ammattityokalut-oy-3306422
+
+8. Australian Target Systems Pty Ltd.
+   Industry: Fertigung / Instandhaltung
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/australian-target-systems-pty-ltd-1231673
+
+9. Bianca And Bianco Building Materials Trading LLC
+   Industry: Großhandel / Einzelhandel
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/bianca-and-bianco-building-materials-trading-llc-2511274
+
+10. C.Sahamongkol Engineering Ltd.,Part.
+   Industry: Unknown
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/csahamongkol-engineering-ltdpart-3459315
+
+11. Coyote SA
+   Industry: Unknown
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/coyote-sa-1256670
+
+12. Deisy Melina Diaz Arevalos (Prico)
+   Industry: Unknown
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/deisy-melina-diaz-arevalos-prico-9663047
+
+13. Designers club
+   Industry: Großhandel / Einzelhandel
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/designers-club-3083579
+
+14. Deutsche Business Consulting GmbH
+   Industry: IT / Kommunikation / Marketing
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/deutsche-business-consulting-gmbh-869718
+
+15. ELITUM DEVELOP S.A.
+   Industry: Wissenschaft und Technologie
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/elitum-develop-sa-1501766
+
+16. Farhgaly Sons
+   Industry: Großhandel / Einzelhandel
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/farhgaly-sons-6986775
+
+17. FinancePlan+ Finanz- und Versicherungsmakler GmbH
+   Industry: Finanzen/Versicherung
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/financeplan-finanz-und-versicherungsmakler-gmbh-981754
+
+18. GRAVITY LIFESTYLE
+   Industry: Unknown
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/gravity-lifestyle-3840174
+
+19. General Trading Service Center
+   Industry: Großhandel / Einzelhandel
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/general-trading-service-center-2750105
+
+20. H2h immobilier
+   Industry: Immobilien
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/h2h-immobilier-9448295
+
+21. Havilah Merchants Limited
+   Industry: Fertigung / Instandhaltung
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/havilah-merchants-limited-1226446
+
+22. IT FIRST BV
+   Industry: IT / Kommunikation / Marketing
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/it-first-bv-1189352
+
+23. Income Electrix Ltd
+   Industry: Versorgungsbetriebe / Energie / Wasserversorgung
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/income-electrix-ltd-1313347
+
+24. Infotrans Caribbean N.V.
+   Industry: IT / Kommunikation / Marketing
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/infotrans-caribbean-nv-2977860
+
+25. Infotrans Caribbean N.V. , Infrotrans Group
+   Industry: IT / Kommunikation / Marketing
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/infotrans-caribbean-nv-infrotrans-group-2210133
+
+26. Ingenium BY D CC S.A.
+   Industry: Wissenschaft und Technologie
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/ingenium-by-d-cc-sa-2407350
+
+27. Innovate investment Real Estate Company
+   Industry: Immobilien
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/innovate-investment-real-estate-company-1889514
+
+28. Innovative Systems Co. Ltd. (ISys)
+   Industry: IT / Kommunikation / Marketing
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/innovative-systems-co-ltd-isys-2126721
+
+29. Insumos Para Colombia SAS
+   Industry: Unknown
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/insumos-para-colombia-sas-3348737
+
+30. Inversiones Gabriela Chacón C.A,  Inversiones Gabriela Chacón C.A
+   Industry: Unknown
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/inversiones-gabriela-chacon-ca-inversiones-gabriela-chacon-ca-9102039
+
+31. KobaVision
+   Industry: Unknown
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/kobavision-809590
+
+32. LAAGER TECNOLOGIAS SUSTENTÁVEIS LTDA
+   Industry: IT / Kommunikation / Marketing
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/laager-tecnologias-sustentaveis-ltda-2023910
+
+33. LUZ Private Limited
+   Industry: Unknown
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/luz-private-limited-966427
+
+34. Lechner Kunststofftechnik GmbH & Co. KG
+   Industry: Wissenschaft und Technologie
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/lechner-kunststofftechnik-gmbh-co-kg-9154128
+
+35. Luxury Goods Trading Co.
+   Industry: Großhandel / Einzelhandel
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/luxury-goods-trading-co-5371344
+
+36. MULTIMERKSA S.A.
+   Industry: Unknown
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/multimerksa-sa-3319102
+
+37. Magnus Marketing Llc.
+   Industry: Unknown
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/magnus-marketing-llc-2481647
+
+38. Nectar Beauty hub
+   Industry: Großhandel / Einzelhandel
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/nectar-beauty-hub-3455021
+
+
+────────────────────────────────────────────────────────────────────────────────
+ALREADY SEEN Customers (these would be skipped):
+────────────────────────────────────────────────────────────────────────────────
+
+1. Pacifico Snacks
+   Industry: Fertigung / Instandhaltung
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/pacifico-snacks-2263714
+
+2. Parmax Oy
+   Industry: Großhandel / Einzelhandel
+   Country: Unknown
+   URL: https://www.odoo.com/de_DE/customers/parmax-oy-1918817
+
+
+════════════════════════════════════════════════════════════════════════════════
+FINAL SUMMARY
+════════════════════════════════════════════════════════════════════════════════
+
+DACH (3 pages per country):
+  Total customers found: 180
+  Pages scraped: 9
+
+UK (3 pages):
+  Total customers found: 60
+  Pages scraped: 3
+
+All (1.5 pages with duplicate detection):
+  Total customers scraped: 40
+  New customers detected: 38
+  Already seen (skipped): 2
+
+Redis simulation state:
+  Total customer hashes stored: 40
+
+════════════════════════════════════════════════════════════════════════════════
+
+This demonstrates how the system would work in production:
+
+1. Scrape pages from Odoo
+2. For each customer, generate a hash (name|country|industry)
+3. Check if hash exists in Redis
+4. If NEW → Add to Google Sheets + Store hash in Redis
+5. If SEEN → Skip (already in Google Sheets)
+
+The Redis "seen" set prevents duplicates across all future runs.
+
+════════════════════════════════════════════════════════════════════════════════
+
+Test completed at: 2026-02-03T11:21:32.983Z
+
+
+
+url: redis-cli --tls -u redis://default:********@noble-zebra-24106.upstash.io:6379
+token: AV4qAAIncDI2YjAzMTUzMTcyZGQ0MTM0YmQ4MmZhOGEwMTZhMDczN3AyMjQxMDY
+
+QSTASH_URL="https://qstash-eu-central-1.upstash.io"
+QSTASH_TOKEN="******"
+QSTASH_CURRENT_SIGNING_KEY="******"
+QSTASH_NEXT_SIGNING_KEY="******"

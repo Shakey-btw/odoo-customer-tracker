@@ -1,0 +1,16 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/check-customers",
+      "schedule": "0 2 * * *"
+    }
+  ],
+  "functions": {
+    "app/api/scrape/worker/route.ts": {
+      "maxDuration": 60
+    },
+    "app/api/cron/check-customers/route.ts": {
+      "maxDuration": 10
+    }
+  }
+}
