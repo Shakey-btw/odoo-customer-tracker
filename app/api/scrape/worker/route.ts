@@ -3,7 +3,7 @@ import { ScrapingJob, ScrapingResult } from "@/types/scraping";
 import { scrapePageWithRetry } from "@/lib/scraper/cheerio-scraper";
 import { buildUrl } from "@/lib/scraper/url-builder";
 import { filterNewCustomers } from "@/lib/state/seen-tracker";
-import { appendCustomersToSheet } from "@/lib/google-sheets/writer";
+import { appendCustomersToSheet, appendLogToSheet } from "@/lib/google-sheets/writer";
 import { TARGET_CONFIGS } from "@/lib/config/targets";
 import { getRedisClient } from "@/lib/state/redis";
 import { TrackingTarget } from "@/types/target";
@@ -69,6 +69,9 @@ export async function POST(request: NextRequest) {
     // Log history to Redis
     await logHistory(job.target, customers.length, newCustomers.length);
 
+    // Log to Google Sheets
+    await appendLogToSheet(job.target, customers.length, newCustomers.length, "Success");
+
     const duration = Date.now() - startTime;
 
     const result: ScrapingResult = {
@@ -89,6 +92,16 @@ export async function POST(request: NextRequest) {
     const duration = Date.now() - startTime;
 
     console.error(`[Worker] Error after ${duration}ms:`, error);
+
+    // Try to get target from request body for error logging
+    try {
+      const body = await request.clone().json();
+      if (body.target) {
+        await appendLogToSheet(body.target, 0, 0, "Error");
+      }
+    } catch {
+      // Ignore if we can't log the error
+    }
 
     return NextResponse.json(
       {

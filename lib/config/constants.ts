@@ -41,5 +41,15 @@ export const GOOGLE_SHEETS = {
     "Country",
     "Description",
     "Detail URL"
-  ]
+  ],
+  LOG_SHEET: {
+    NAME: "Scraping Log",
+    HEADERS: [
+      "Timestamp (CEST)",
+      "Target",
+      "Customers Found",
+      "New Customers",
+      "Status"
+    ]
+  }
 };

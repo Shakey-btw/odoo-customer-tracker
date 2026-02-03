@@ -71,3 +71,64 @@ export async function appendCustomersToMultipleSheets(
 
   await Promise.all(promises);
 }
+
+/**
+ * Append a log entry to the Scraping Log sheet
+ */
+export async function appendLogToSheet(
+  target: TrackingTarget,
+  customersFound: number,
+  newCustomers: number,
+  status: "Success" | "Error" = "Success"
+): Promise<void> {
+  try {
+    const sheets = await getSheetsClient();
+    const logSheetName = GOOGLE_SHEETS.LOG_SHEET.NAME;
+
+    // Format timestamp in CEST
+    const timestamp = formatTimestampCEST(Date.now());
+
+    // Create log row
+    const row = [
+      timestamp,
+      target.toUpperCase(),
+      customersFound,
+      newCustomers,
+      status
+    ];
+
+    // Append to log sheet
+    await sheets.spreadsheets.values.append({
+      spreadsheetId: GOOGLE_SHEETS.SPREADSHEET_ID,
+      range: `${logSheetName}!A:E`,
+      valueInputOption: "USER_ENTERED",
+      requestBody: {
+        values: [row]
+      }
+    });
+
+    console.log(`✓ Logged scraping run to ${logSheetName}: ${target} (${newCustomers} new)`);
+  } catch (error) {
+    console.error(`Error appending log to sheet:`, error);
+    // Don't throw - logging shouldn't break the scraping
+  }
+}
+
+/**
+ * Format timestamp in CEST timezone
+ */
+function formatTimestampCEST(timestamp: number): string {
+  const date = new Date(timestamp);
+
+  const options: Intl.DateTimeFormatOptions = {
+    timeZone: 'Europe/Paris', // CEST timezone
+    hour: '2-digit',
+    minute: '2-digit',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  };
+
+  const formatted = new Intl.DateTimeFormat('de-DE', options).format(date);
+  return `${formatted} CEST`;
+}

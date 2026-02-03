@@ -126,6 +126,105 @@ export async function initializeGoogleSheets(): Promise<{
       }
     }
 
+    // Create Scraping Log tab
+    const logSheetName = GOOGLE_SHEETS.LOG_SHEET.NAME;
+    try {
+      // Refresh spreadsheet data to get latest sheets (after creating target tabs)
+      const updatedSpreadsheet = await sheets.spreadsheets.get({
+        spreadsheetId: GOOGLE_SHEETS.SPREADSHEET_ID
+      });
+
+      const updatedExistingSheets = updatedSpreadsheet.data.sheets?.map(
+        sheet => sheet.properties?.title || ""
+      ) || [];
+
+      if (!updatedExistingSheets.includes(logSheetName)) {
+        // Create log tab
+        await sheets.spreadsheets.batchUpdate({
+          spreadsheetId: GOOGLE_SHEETS.SPREADSHEET_ID,
+          requestBody: {
+            requests: [{
+              addSheet: {
+                properties: {
+                  title: logSheetName
+                }
+              }
+            }]
+          }
+        });
+
+        details.tabsCreated.push(logSheetName);
+        console.log(`✓ Created tab: ${logSheetName}`);
+      } else {
+        details.tabsUpdated.push(logSheetName);
+        console.log(`✓ Tab already exists: ${logSheetName}`);
+      }
+
+      // Add headers to log sheet
+      await sheets.spreadsheets.values.update({
+        spreadsheetId: GOOGLE_SHEETS.SPREADSHEET_ID,
+        range: `${logSheetName}!A1:E1`,
+        valueInputOption: "USER_ENTERED",
+        requestBody: {
+          values: [GOOGLE_SHEETS.LOG_SHEET.HEADERS]
+        }
+      });
+
+      // Format log sheet header (bold, freeze)
+      const finalSpreadsheet = await sheets.spreadsheets.get({
+        spreadsheetId: GOOGLE_SHEETS.SPREADSHEET_ID
+      });
+
+      const logSheetId = finalSpreadsheet.data.sheets?.find(
+        s => s.properties?.title === logSheetName
+      )?.properties?.sheetId;
+
+      if (logSheetId !== undefined) {
+        await sheets.spreadsheets.batchUpdate({
+          spreadsheetId: GOOGLE_SHEETS.SPREADSHEET_ID,
+          requestBody: {
+            requests: [
+              {
+                repeatCell: {
+                  range: {
+                    sheetId: logSheetId,
+                    startRowIndex: 0,
+                    endRowIndex: 1
+                  },
+                  cell: {
+                    userEnteredFormat: {
+                      textFormat: {
+                        bold: true
+                      }
+                    }
+                  },
+                  fields: "userEnteredFormat.textFormat.bold"
+                }
+              },
+              {
+                updateSheetProperties: {
+                  properties: {
+                    sheetId: logSheetId,
+                    gridProperties: {
+                      frozenRowCount: 1
+                    }
+                  },
+                  fields: "gridProperties.frozenRowCount"
+                }
+              }
+            ]
+          }
+        });
+      }
+
+      console.log(`✓ Updated headers for: ${logSheetName}`);
+
+    } catch (error) {
+      const errorMsg = `Failed to process log tab ${logSheetName}: ${error}`;
+      details.errors.push(errorMsg);
+      console.error(errorMsg);
+    }
+
     const success = details.errors.length === 0;
     const message = success
       ? `Successfully initialized ${details.tabsCreated.length + details.tabsUpdated.length} tabs`
