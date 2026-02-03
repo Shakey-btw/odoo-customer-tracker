@@ -27,16 +27,25 @@ export function getRedisClient(): Redis {
 // Export convenience methods
 export const redisClient = {
   // Set operations
-  sadd: (key: string, ...members: string[]) => getRedisClient().sadd(key, ...members),
+  sadd: async (key: string, ...members: string[]) => {
+    const client = getRedisClient();
+    return client.sadd(key, ...members);
+  },
   sismember: (key: string, member: string) => getRedisClient().sismember(key, member),
   smembers: (key: string) => getRedisClient().smembers(key),
   scard: (key: string) => getRedisClient().scard(key),
-  srem: (key: string, ...members: string[]) => getRedisClient().srem(key, ...members),
+  srem: async (key: string, ...members: string[]) => {
+    const client = getRedisClient();
+    return client.srem(key, ...members);
+  },
 
   // String operations
   get: (key: string) => getRedisClient().get(key),
   set: (key: string, value: string | number) => getRedisClient().set(key, value),
-  del: (...keys: string[]) => getRedisClient().del(...keys),
+  del: async (...keys: string[]) => {
+    const client = getRedisClient();
+    return client.del(...keys);
+  },
 
   // Hash operations
   hset: (key: string, field: string, value: string | number) =>
