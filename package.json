@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "export:uk": "tsx scripts/export-all-customers.ts uk",
+    "export:dach": "tsx scripts/export-all-customers.ts dach",
+    "export:all": "tsx scripts/export-all-customers.ts all"
   },
   "dependencies": {
     "@types/cheerio": "^0.22.35",
