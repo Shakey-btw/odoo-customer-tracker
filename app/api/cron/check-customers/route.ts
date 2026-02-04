@@ -155,6 +155,33 @@ export async function GET(request: NextRequest) {
     console.error(`[Orchestrator] Error stack:`, error instanceof Error ? error.stack : 'No stack trace');
     console.error(`[Orchestrator] Full error object:`, JSON.stringify(error, Object.getOwnPropertyNames(error)));
 
+    // Log error to Google Sheets and Redis for visibility
+    try {
+      const { appendLogToSheet } = await import("@/lib/google-sheets/writer");
+      const { getRedisClient } = await import("@/lib/state/redis");
+
+      const errorMessage = error instanceof Error ? error.message : String(error);
+
+      // Log to Google Sheets for all targets
+      await appendLogToSheet("all", 0, 0, "Error");
+
+      // Log to Redis history
+      const redis = getRedisClient();
+      const historyEntry = JSON.stringify({
+        target: "system",
+        error: errorMessage,
+        customersFound: 0,
+        newCustomers: 0,
+        timestamp: Date.now()
+      });
+      await redis.lpush("history:errors", historyEntry);
+      await redis.ltrim("history:errors", 0, 99);
+
+      console.log("[Orchestrator] Error logged to Google Sheets and Redis");
+    } catch (logError) {
+      console.error("[Orchestrator] Failed to log error:", logError);
+    }
+
     return NextResponse.json(
       {
         success: false,

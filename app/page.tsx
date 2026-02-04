@@ -175,13 +175,15 @@ function HistoryList() {
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <div style={{ flex: 1 }}>
-              <strong style={{ display: 'block', marginBottom: '0.25rem' }}>
-                {entry.target.toUpperCase()}
+              <strong style={{ display: 'block', marginBottom: '0.25rem', color: entry.error ? '#dc2626' : 'inherit' }}>
+                {entry.error ? '❌ ERROR' : entry.target.toUpperCase()}
               </strong>
-              <span style={{ color: entry.newCustomers > 0 ? '#0070f3' : '#666', fontSize: '14px' }}>
-                {entry.newCustomers > 0
-                  ? `${entry.newCustomers} new customer${entry.newCustomers !== 1 ? 's' : ''} found`
-                  : 'No new customers'}
+              <span style={{ color: entry.error ? '#dc2626' : (entry.newCustomers > 0 ? '#0070f3' : '#666'), fontSize: '14px' }}>
+                {entry.error
+                  ? entry.error
+                  : (entry.newCustomers > 0
+                    ? `${entry.newCustomers} new customer${entry.newCustomers !== 1 ? 's' : ''} found`
+                    : 'No new customers')}
               </span>
             </div>
             <time style={{ fontSize: '12px', color: '#999', whiteSpace: 'nowrap', marginLeft: '1rem' }}>
