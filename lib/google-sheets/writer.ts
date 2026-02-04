@@ -79,7 +79,8 @@ export async function appendLogToSheet(
   target: TrackingTarget,
   customersFound: number,
   newCustomers: number,
-  status: "Success" | "Error" = "Success"
+  status: "Success" | "Error" = "Success",
+  errorMessage?: string
 ): Promise<void> {
   try {
     const sheets = await getSheetsClient();
@@ -94,13 +95,14 @@ export async function appendLogToSheet(
       target.toUpperCase(),
       customersFound,
       newCustomers,
-      status
+      status,
+      errorMessage || ""
     ];
 
     // Append to log sheet
     await sheets.spreadsheets.values.append({
       spreadsheetId: GOOGLE_SHEETS.SPREADSHEET_ID,
-      range: `${logSheetName}!A:E`,
+      range: `${logSheetName}!A:F`,
       valueInputOption: "USER_ENTERED",
       requestBody: {
         values: [row]

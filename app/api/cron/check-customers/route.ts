@@ -162,8 +162,8 @@ export async function GET(request: NextRequest) {
 
       const errorMessage = error instanceof Error ? error.message : String(error);
 
-      // Log to Google Sheets for all targets
-      await appendLogToSheet("all", 0, 0, "Error");
+      // Log to Google Sheets for all targets with error message
+      await appendLogToSheet("all", 0, 0, "Error", errorMessage);
 
       // Log to Redis history
       const redis = getRedisClient();

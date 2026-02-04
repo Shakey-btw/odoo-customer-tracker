@@ -49,7 +49,8 @@ export const GOOGLE_SHEETS = {
       "Target",
       "Customers Found",
       "New Customers",
-      "Status"
+      "Status",
+      "Error Message"
     ]
   }
 };

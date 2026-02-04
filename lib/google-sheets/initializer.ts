@@ -163,7 +163,7 @@ export async function initializeGoogleSheets(): Promise<{
       // Add headers to log sheet
       await sheets.spreadsheets.values.update({
         spreadsheetId: GOOGLE_SHEETS.SPREADSHEET_ID,
-        range: `${logSheetName}!A1:E1`,
+        range: `${logSheetName}!A1:F1`,
         valueInputOption: "USER_ENTERED",
         requestBody: {
           values: [GOOGLE_SHEETS.LOG_SHEET.HEADERS]
