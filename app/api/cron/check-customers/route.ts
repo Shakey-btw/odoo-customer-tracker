@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Client } from "@upstash/qstash";
 import { TARGET_CONFIGS } from "@/lib/config/targets";
-import { shouldDoFullScan, updateLastCheckTimestamp, updateLastFullScanTimestamp } from "@/lib/state/seen-tracker";
+import { updateLastCheckTimestamp } from "@/lib/state/seen-tracker";
 import { ScrapingJob } from "@/types/scraping";
 import { TrackingTarget } from "@/types/target";
 
@@ -62,14 +62,11 @@ export async function GET(request: NextRequest) {
       console.log(`[Orchestrator] Processing target: ${target}`);
 
       const config = TARGET_CONFIGS[target];
-      const isFullScan = await shouldDoFullScan(target);
 
-      console.log(`[Orchestrator] ${target}: ${isFullScan ? "Full scan" : "Incremental scan"}`);
+      console.log(`[Orchestrator] ${target}: Incremental scan`);
 
-      // Get pages to check
-      const pagesToCheck = isFullScan
-        ? getAllPages(config.totalPages)
-        : getIncrementalPages(target);
+      // Get pages to check (always incremental)
+      const pagesToCheck = getIncrementalPages(target);
 
       console.log(`[Orchestrator] ${target}: Queuing ${pagesToCheck.length} pages`);
 
@@ -121,14 +118,10 @@ export async function GET(request: NextRequest) {
         const targetDuration = Date.now() - targetStartTime;
         console.log(`[Orchestrator] ${target}: Queued ${pagesToCheck.length} jobs in ${targetDuration}ms`);
 
-        // Update timestamps
+        // Update timestamp
         await updateLastCheckTimestamp(target);
 
-        if (isFullScan) {
-          await updateLastFullScanTimestamp(target);
-        }
-
-        console.log(`[Orchestrator] ${target}: Updated timestamps`);
+        console.log(`[Orchestrator] ${target}: Updated timestamp`);
       } catch (targetError) {
         console.error(`[Orchestrator] Error processing target ${target}:`, targetError);
         throw targetError;
@@ -193,10 +186,6 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     );
   }
-}
-
-function getAllPages(totalPages: number): number[] {
-  return Array.from({ length: totalPages }, (_, i) => i + 1);
 }
 
 function getIncrementalPages(target: TrackingTarget): number[] {

@@ -6,9 +6,6 @@ export const SCRAPING_CONFIG = {
     uk: 36 // all pages
   },
 
-  // Full scan interval (days)
-  FULL_SCAN_INTERVAL: 7,
-
   // Request delays (seconds)
   BASE_DELAY: 60,
   DELAY_JITTER: 0.2,
@@ -28,8 +25,7 @@ export const SCRAPING_CONFIG = {
 export const REDIS_KEYS = {
   SEEN_PREFIX: "seen:",
   LAST_CHECK_PREFIX: "last_check:",
-  PROGRESS_PREFIX: "progress:",
-  LAST_FULL_SCAN_PREFIX: "last_full_scan:"
+  PROGRESS_PREFIX: "progress:"
 };
 
 export const GOOGLE_SHEETS = {

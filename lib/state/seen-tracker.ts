@@ -127,36 +127,3 @@ export async function updateLastCheckTimestamp(target: TrackingTarget): Promise<
   await getRedisClient().set(key, Date.now());
 }
 
-/**
- * Get last full scan timestamp for a target
- */
-export async function getLastFullScanTimestamp(target: TrackingTarget): Promise<number | null> {
-  const key = `${REDIS_KEYS.LAST_FULL_SCAN_PREFIX}${target}`;
-  const timestamp = await getRedisClient().get(key);
-  return timestamp ? Number(timestamp) : null;
-}
-
-/**
- * Update last full scan timestamp for a target
- */
-export async function updateLastFullScanTimestamp(target: TrackingTarget): Promise<void> {
-  const key = `${REDIS_KEYS.LAST_FULL_SCAN_PREFIX}${target}`;
-  await getRedisClient().set(key, Date.now());
-}
-
-/**
- * Check if a full scan is needed based on the last full scan timestamp
- */
-export async function shouldDoFullScan(target: TrackingTarget): Promise<boolean> {
-  const lastFullScan = await getLastFullScanTimestamp(target);
-
-  if (!lastFullScan) {
-    // Never done a full scan
-    return true;
-  }
-
-  const daysSinceLastScan = (Date.now() - lastFullScan) / (1000 * 60 * 60 * 24);
-  const FULL_SCAN_INTERVAL_DAYS = 7;
-
-  return daysSinceLastScan >= FULL_SCAN_INTERVAL_DAYS;
-}
