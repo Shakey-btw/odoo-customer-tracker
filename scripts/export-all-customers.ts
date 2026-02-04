@@ -91,10 +91,10 @@ async function exportUK(): Promise<ExportStats> {
 
     for (let page = 1; page <= country.pages; page++) {
       try {
-        const url = buildUrl("uk", page, country.id);
+        const url = buildUrl({ target: "uk", page, country });
         console.log(`[${page}/${country.pages}] Scraping: ${url}`);
 
-        const customers = await scrapePageWithRetry(url);
+        const customers = await scrapePageWithRetry({ url });
         allCustomers.push(...customers);
 
         console.log(`  ✓ Found ${customers.length} customers (Total: ${allCustomers.length})`);
@@ -159,10 +159,10 @@ async function exportDACH(): Promise<ExportStats> {
 
     for (let page = 1; page <= country.pages; page++) {
       try {
-        const url = buildUrl("dach", page, country.id);
+        const url = buildUrl({ target: "dach", page, country });
         console.log(`[${page}/${country.pages}] Scraping: ${url}`);
 
-        const customers = await scrapePageWithRetry(url);
+        const customers = await scrapePageWithRetry({ url });
         allCustomers.push(...customers);
 
         console.log(`  ✓ Found ${customers.length} customers (Total: ${allCustomers.length})`);
