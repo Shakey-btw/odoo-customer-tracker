@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { verifySignatureEdge } from "@upstash/qstash/nextjs";
+import { Receiver } from "@upstash/qstash";
 import { ScrapingJob, ScrapingResult } from "@/types/scraping";
 import { scrapePageWithRetry } from "@/lib/scraper/cheerio-scraper";
 import { buildUrl } from "@/lib/scraper/url-builder";
@@ -9,12 +9,72 @@ import { TARGET_CONFIGS } from "@/lib/config/targets";
 import { getRedisClient } from "@/lib/state/redis";
 import { TrackingTarget } from "@/types/target";
 
-async function handler(request: NextRequest) {
+export async function POST(request: NextRequest) {
   const startTime = Date.now();
 
   try {
-    // Parse job from request body
+    // Verify QStash signature for security
+    const signature = request.headers.get("upstash-signature");
+    const currentSigningKey = process.env.QSTASH_CURRENT_SIGNING_KEY;
+    const nextSigningKey = process.env.QSTASH_NEXT_SIGNING_KEY;
+
+    if (signature && currentSigningKey && nextSigningKey) {
+      const receiver = new Receiver({
+        currentSigningKey,
+        nextSigningKey,
+      });
+
+      const body = await request.text();
+      const isValid = await receiver.verify({
+        signature,
+        body,
+      });
+
+      if (!isValid) {
+        console.error("[Worker] Invalid QStash signature");
+        return NextResponse.json(
+          { error: "Invalid signature" },
+          { status: 401 }
+        );
+      }
+
+      // Parse the verified body
+      const job: ScrapingJob = JSON.parse(body);
+
+      // Continue with processing...
+      return await processJob(job, startTime);
+    }
+
+    // If no signature (direct call), parse normally
     const job: ScrapingJob = await request.json();
+    return await processJob(job, startTime);
+  } catch (error) {
+    const duration = Date.now() - startTime;
+
+    console.error(`[Worker] Error after ${duration}ms:`, error);
+
+    // Try to get target from request body for error logging
+    try {
+      const body = await request.clone().json();
+      if (body.target) {
+        await appendLogToSheet(body.target, 0, 0, "Error");
+      }
+    } catch {
+      // Ignore if we can't log the error
+    }
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: error instanceof Error ? error.message : String(error)
+      },
+      { status: 500 }
+    );
+  }
+}
+
+async function processJob(job: ScrapingJob, startTime: number): Promise<NextResponse> {
+  try {
 
     console.log(`[Worker] Processing job: ${job.target}, page ${job.page}`);
 
@@ -92,13 +152,12 @@ async function handler(request: NextRequest) {
   } catch (error) {
     const duration = Date.now() - startTime;
 
-    console.error(`[Worker] Error after ${duration}ms:`, error);
+    console.error(`[Worker] Error in processJob after ${duration}ms:`, error);
 
-    // Try to get target from request body for error logging
+    // Try to log error for this job's target
     try {
-      const body = await request.clone().json();
-      if (body.target) {
-        await appendLogToSheet(body.target, 0, 0, "Error");
+      if (job.target) {
+        await appendLogToSheet(job.target, 0, 0, "Error");
       }
     } catch {
       // Ignore if we can't log the error
@@ -137,9 +196,6 @@ async function logHistory(
     // Don't fail the worker if history logging fails
   }
 }
-
-// Wrap handler with QStash signature verification
-export const POST = verifySignatureEdge(handler);
 
 export const maxDuration = 60; // Vercel Pro: 60 second timeout
 export const dynamic = "force-dynamic";
