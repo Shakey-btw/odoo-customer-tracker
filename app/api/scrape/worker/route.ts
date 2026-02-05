@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { verifySignatureEdge } from "@upstash/qstash/nextjs";
 import { ScrapingJob, ScrapingResult } from "@/types/scraping";
 import { scrapePageWithRetry } from "@/lib/scraper/cheerio-scraper";
 import { buildUrl } from "@/lib/scraper/url-builder";
@@ -8,7 +9,7 @@ import { TARGET_CONFIGS } from "@/lib/config/targets";
 import { getRedisClient } from "@/lib/state/redis";
 import { TrackingTarget } from "@/types/target";
 
-export async function POST(request: NextRequest) {
+async function handler(request: NextRequest) {
   const startTime = Date.now();
 
   try {
@@ -136,6 +137,9 @@ async function logHistory(
     // Don't fail the worker if history logging fails
   }
 }
+
+// Wrap handler with QStash signature verification
+export const POST = verifySignatureEdge(handler);
 
 export const maxDuration = 60; // Vercel Pro: 60 second timeout
 export const dynamic = "force-dynamic";
