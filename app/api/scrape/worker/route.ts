@@ -13,39 +13,66 @@ export async function POST(request: NextRequest) {
   const startTime = Date.now();
 
   try {
-    // Verify QStash signature for security
+    // Check for QStash signature
     const signature = request.headers.get("upstash-signature");
     const currentSigningKey = process.env.QSTASH_CURRENT_SIGNING_KEY;
     const nextSigningKey = process.env.QSTASH_NEXT_SIGNING_KEY;
 
-    if (signature && currentSigningKey && nextSigningKey) {
-      const receiver = new Receiver({
-        currentSigningKey,
-        nextSigningKey,
-      });
+    console.log("[Worker] Request headers:", {
+      hasSignature: !!signature,
+      hasCurrentKey: !!currentSigningKey,
+      hasNextKey: !!nextSigningKey,
+      userAgent: request.headers.get("user-agent")
+    });
 
-      const body = await request.text();
-      const isValid = await receiver.verify({
-        signature,
-        body,
-      });
-
-      if (!isValid) {
-        console.error("[Worker] Invalid QStash signature");
+    // If QStash signature present, verify it
+    if (signature) {
+      if (!currentSigningKey || !nextSigningKey) {
+        console.error("[Worker] QStash signing keys not configured");
         return NextResponse.json(
-          { error: "Invalid signature" },
-          { status: 401 }
+          { error: "Server configuration error" },
+          { status: 500 }
         );
       }
 
-      // Parse the verified body
-      const job: ScrapingJob = JSON.parse(body);
+      try {
+        const receiver = new Receiver({
+          currentSigningKey,
+          nextSigningKey,
+        });
 
-      // Continue with processing...
-      return await processJob(job, startTime);
+        const body = await request.text();
+
+        const isValid = await receiver.verify({
+          signature,
+          body,
+        });
+
+        if (!isValid) {
+          console.error("[Worker] Invalid QStash signature");
+          return NextResponse.json(
+            { error: "Invalid signature" },
+            { status: 401 }
+          );
+        }
+
+        console.log("[Worker] QStash signature verified successfully");
+
+        // Parse the verified body
+        const job: ScrapingJob = JSON.parse(body);
+        return await processJob(job, startTime);
+
+      } catch (verifyError) {
+        console.error("[Worker] Signature verification error:", verifyError);
+        return NextResponse.json(
+          { error: "Signature verification failed" },
+          { status: 401 }
+        );
+      }
     }
 
-    // If no signature (direct call), parse normally
+    // If no signature (direct call for testing), parse normally
+    console.log("[Worker] No signature, processing as direct call");
     const job: ScrapingJob = await request.json();
     return await processJob(job, startTime);
   } catch (error) {
